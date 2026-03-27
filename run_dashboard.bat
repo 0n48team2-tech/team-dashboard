@@ -7,9 +7,9 @@ echo ============================================
 
 REM === CONFIG: update paths if needed =========
 set "PY=C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\MyPythonScripts\PyCharm\Scripts\python.exe"
-set "PY_SCRIPT=C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\teamDashboard_v2.py"
-set "REPO_DIR=C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\repo"
-set "DASHBOARD_URL=https://YOUR-GITHUB-USERNAME.github.io/YOUR-REPO-NAME/techDashboard_v2.html"
+set "PY_SCRIPT=C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\team-dashboard\teamDashboard_v2.py"
+set "REPO_DIR=C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\team-dashboard"
+set "DASHBOARD_URL=https://0n48team2-tech.github.io/team-dashboard/techDashboard_v2.html"
 set "BROWSER=msedge"
 REM =============================================
 
