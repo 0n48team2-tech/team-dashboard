@@ -25,17 +25,17 @@ import openpyxl
 # Edit these paths to match your machine.
 
 SOURCE_FILES = {
-    "lm_quotes": r"C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\Excel Reports\L&M Quoted Count & Margin Summary Report.xlsx",
-    "prejob":    r"C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\Excel Reports\PreJob Checklist.xlsx",
-    "nearmiss":  r"C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\Excel Reports\Near Miss Summary Report.xlsx",
-    "crc":       r"C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\Excel Reports\CRC Summary Report.xlsx",
-    "debrief":   r"C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\Excel Reports\Debriefing.xlsx",
-    "roster":    r"C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\Excel Reports\Roster.xlsx",
+    "lm_quotes": r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\L&M Quoted Count & Margin Summary Report.xlsx",
+    "prejob":    r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\PreJob Checklist.xlsx",
+    "nearmiss":  r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\Near Miss Summary Report.xlsx",
+    "crc":       r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\CRC Summary Report.xlsx",
+    "debrief":   r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\Debriefing.xlsx",
+    "roster":    r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\Roster.xlsx",
 }
 
 # Where to write data.json and config.json.
 # Set this to your local git repo folder.
-OUTPUT_DIR = r"C:\Users\jwagemd\OneDrive - Johnson Controls\Documents\Team Dashboard Files\repo"
+OUTPUT_DIR = r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\team-dashboard"
 
 # Team / branch filter constants (used to filter multi-branch exports)
 TEAM1          = '0N48 TB Team 1 Denver SVC'
