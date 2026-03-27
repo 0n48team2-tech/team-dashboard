@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-27T15:46:16",
+  "generated": "2026-03-27T15:51:07",
   "month": "2026 / 03",
   "teamName": "Team 2",
   "branch": "Denver CO - 0N48",
@@ -21,7 +21,7 @@
       "safetyPct": 1.0,
       "required": 17,
       "completed": 18,
-      "nearMiss": false,
+      "nearMiss": true,
       "debriefPct": 0.9375
     },
     {
@@ -51,7 +51,7 @@
       "safetyPct": 0.9444,
       "required": 18,
       "completed": 21,
-      "nearMiss": false,
+      "nearMiss": true,
       "debriefPct": 0.8462
     },
     {
@@ -91,7 +91,7 @@
       "safetyPct": 1.0,
       "required": 15,
       "completed": 16,
-      "nearMiss": false,
+      "nearMiss": true,
       "debriefPct": 0.7895
     },
     {
@@ -111,7 +111,7 @@
       "safetyPct": 1.0,
       "required": 8,
       "completed": 9,
-      "nearMiss": false,
+      "nearMiss": true,
       "debriefPct": 1.0
     },
     {
@@ -121,7 +121,7 @@
       "safetyPct": 0.8571,
       "required": 14,
       "completed": 15,
-      "nearMiss": false,
+      "nearMiss": true,
       "debriefPct": 0.4706
     },
     {
@@ -131,7 +131,7 @@
       "safetyPct": 0.9412,
       "required": 17,
       "completed": 23,
-      "nearMiss": false,
+      "nearMiss": true,
       "debriefPct": 1.0
     }
   ],
