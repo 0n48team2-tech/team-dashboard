@@ -1,0 +1,10 @@
+{
+  "_instructions": {
+    "plan": "Update 'denver_plan' at the start of each month with the monthly revenue target ($).",
+    "team_name": "Display name shown in the dashboard header.",
+    "branch": "Used for display only."
+  },
+  "team_name": "Team 2",
+  "branch": "Denver CO - 0N48",
+  "denver_plan": 728421
+}
