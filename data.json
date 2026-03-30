@@ -1,5 +1,5 @@
 {
-  "generated": "2026-03-27T15:51:07",
+  "generated": "2026-03-30T13:59:50",
   "month": "2026 / 03",
   "teamName": "Team 2",
   "branch": "Denver CO - 0N48",
@@ -8,109 +8,109 @@
       "name": "M. Anderson",
       "quotes": 0,
       "revenue": 0.0,
-      "safetyPct": 0.4667,
-      "required": 15,
+      "safetyPct": 0.4118,
+      "required": 17,
       "completed": 7,
       "nearMiss": false,
-      "debriefPct": 0.875
+      "debriefPct": 0.913
     },
     {
       "name": "C. Atkin",
       "quotes": 1,
       "revenue": 551.88,
-      "safetyPct": 1.0,
-      "required": 17,
+      "safetyPct": 0.9474,
+      "required": 19,
       "completed": 18,
       "nearMiss": true,
-      "debriefPct": 0.9375
+      "debriefPct": 0.9
     },
     {
       "name": "B. Credo",
       "quotes": 1,
       "revenue": 1168.49,
-      "safetyPct": 0.9412,
-      "required": 17,
+      "safetyPct": 0.8889,
+      "required": 18,
       "completed": 19,
       "nearMiss": true,
-      "debriefPct": 0.6842
+      "debriefPct": 0.6364
     },
     {
       "name": "M. Evelyn",
       "quotes": 1,
       "revenue": 19057.0,
-      "safetyPct": 0.9333,
-      "required": 15,
-      "completed": 16,
+      "safetyPct": 0.9412,
+      "required": 17,
+      "completed": 17,
       "nearMiss": false,
-      "debriefPct": 0.8824
+      "debriefPct": 0.8571
     },
     {
       "name": "J. Garcia",
       "quotes": 1,
       "revenue": 1857.27,
-      "safetyPct": 0.9444,
-      "required": 18,
+      "safetyPct": 0.9,
+      "required": 20,
       "completed": 21,
       "nearMiss": true,
-      "debriefPct": 0.8462
+      "debriefPct": 0.8667
     },
     {
       "name": "T. Koski",
       "quotes": 0,
       "revenue": 0.0,
-      "safetyPct": 0.9333,
-      "required": 15,
-      "completed": 18,
-      "nearMiss": false,
-      "debriefPct": 0.7222
+      "safetyPct": 0.9412,
+      "required": 17,
+      "completed": 20,
+      "nearMiss": true,
+      "debriefPct": 0.619
     },
     {
       "name": "K. Lopez",
       "quotes": 1,
       "revenue": 3204.65,
-      "safetyPct": 0.8667,
-      "required": 15,
-      "completed": 19,
-      "nearMiss": false,
-      "debriefPct": 0.6842
+      "safetyPct": 0.8889,
+      "required": 18,
+      "completed": 23,
+      "nearMiss": true,
+      "debriefPct": 0.5556
     },
     {
       "name": "J. Marks",
       "quotes": 0,
       "revenue": 0.0,
       "safetyPct": 1.0,
-      "required": 18,
-      "completed": 20,
+      "required": 20,
+      "completed": 22,
       "nearMiss": false,
-      "debriefPct": 0.8333
+      "debriefPct": 0.8214
     },
     {
       "name": "A. McKenney",
       "quotes": 6,
       "revenue": 163884.61,
       "safetyPct": 1.0,
-      "required": 15,
-      "completed": 16,
+      "required": 17,
+      "completed": 17,
       "nearMiss": true,
-      "debriefPct": 0.7895
+      "debriefPct": 0.7826
     },
     {
       "name": "M. Morales",
       "quotes": 2,
       "revenue": 10041.7,
       "safetyPct": 1.0,
-      "required": 19,
-      "completed": 32,
+      "required": 21,
+      "completed": 34,
       "nearMiss": false,
-      "debriefPct": 0.9286
+      "debriefPct": 0.9394
     },
     {
       "name": "B. Robinson",
       "quotes": 4,
       "revenue": 26786.37,
       "safetyPct": 1.0,
-      "required": 8,
-      "completed": 9,
+      "required": 10,
+      "completed": 10,
       "nearMiss": true,
       "debriefPct": 1.0
     },
@@ -118,27 +118,27 @@
       "name": "D. Spontarelli",
       "quotes": 1,
       "revenue": 6440.0,
-      "safetyPct": 0.8571,
-      "required": 14,
-      "completed": 15,
+      "safetyPct": 0.875,
+      "required": 16,
+      "completed": 16,
       "nearMiss": true,
-      "debriefPct": 0.4706
+      "debriefPct": 0.4737
     },
     {
       "name": "M. Winkleblack",
       "quotes": 4,
       "revenue": 8550.45,
-      "safetyPct": 0.9412,
-      "required": 17,
-      "completed": 23,
+      "safetyPct": 0.9474,
+      "required": 19,
+      "completed": 25,
       "nearMiss": true,
       "debriefPct": 1.0
     }
   ],
   "revenue": {
-    "team1": 89120.74,
-    "team2": 324001.65,
-    "total": 413122.39,
+    "team1": 97065.07,
+    "team2": 330025.4,
+    "total": 427090.47,
     "plan": 728421.0
   },
   "awards": {
@@ -149,7 +149,7 @@
     },
     "byDollars": {
       "name": "M. Morales",
-      "dollars": 69730.65
+      "dollars": 57821.45
     }
   }
 }
