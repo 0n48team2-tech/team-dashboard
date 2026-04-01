@@ -1,6 +1,6 @@
 {
-  "generated": "2026-03-31T08:06:22",
-  "month": "2026 / 03",
+  "generated": "2026-04-01T10:53:14",
+  "month": "2026 / 04",
   "teamName": "Team 2",
   "branch": "Denver CO - 0N48",
   "techs": [
@@ -16,8 +16,8 @@
     },
     {
       "name": "C. Atkin",
-      "quotes": 1,
-      "revenue": 551.88,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 0.9474,
       "required": 19,
       "completed": 18,
@@ -26,8 +26,8 @@
     },
     {
       "name": "B. Credo",
-      "quotes": 1,
-      "revenue": 1168.49,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 0.8889,
       "required": 18,
       "completed": 19,
@@ -36,8 +36,8 @@
     },
     {
       "name": "M. Evelyn",
-      "quotes": 1,
-      "revenue": 19057.0,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 0.9412,
       "required": 17,
       "completed": 17,
@@ -46,8 +46,8 @@
     },
     {
       "name": "J. Garcia",
-      "quotes": 1,
-      "revenue": 1857.27,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 0.9,
       "required": 20,
       "completed": 21,
@@ -66,8 +66,8 @@
     },
     {
       "name": "K. Lopez",
-      "quotes": 1,
-      "revenue": 3204.65,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 0.8889,
       "required": 18,
       "completed": 23,
@@ -86,8 +86,8 @@
     },
     {
       "name": "A. McKenney",
-      "quotes": 6,
-      "revenue": 163884.61,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 1.0,
       "required": 17,
       "completed": 17,
@@ -96,8 +96,8 @@
     },
     {
       "name": "M. Morales",
-      "quotes": 2,
-      "revenue": 10041.7,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 1.0,
       "required": 21,
       "completed": 34,
@@ -106,8 +106,8 @@
     },
     {
       "name": "B. Robinson",
-      "quotes": 4,
-      "revenue": 26786.37,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 1.0,
       "required": 10,
       "completed": 10,
@@ -116,8 +116,8 @@
     },
     {
       "name": "D. Spontarelli",
-      "quotes": 1,
-      "revenue": 6440.0,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 0.875,
       "required": 16,
       "completed": 16,
@@ -126,8 +126,8 @@
     },
     {
       "name": "M. Winkleblack",
-      "quotes": 4,
-      "revenue": 8550.45,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 0.9474,
       "required": 19,
       "completed": 25,
@@ -136,20 +136,20 @@
     }
   ],
   "revenue": {
-    "team1": 97065.07,
-    "team2": 330025.4,
-    "total": 427090.47,
+    "team1": 304645.17,
+    "team2": 489349.04,
+    "total": 793994.21,
     "plan": 748129.0
   },
   "awards": {
-    "prevMonth": "2026 / 02",
+    "prevMonth": "2026 / 03",
     "byQuotes": {
       "name": "A. McKenney",
-      "count": 4
+      "count": 6
     },
     "byDollars": {
-      "name": "M. Morales",
-      "dollars": 57821.45
+      "name": "A. McKenney",
+      "dollars": 163884.61
     }
   }
 }
