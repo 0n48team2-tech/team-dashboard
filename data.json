@@ -1,5 +1,5 @@
 {
-  "generated": "2026-04-17T12:34:15",
+  "generated": "2026-04-20T09:10:53",
   "month": "2026 / 04",
   "teamName": "Team 2",
   "branch": "Denver CO - 0N48",
@@ -136,9 +136,9 @@
     }
   ],
   "revenue": {
-    "team1": 91972.74,
-    "team2": 147661.3,
-    "total": 239634.04,
+    "team1": 166527.98,
+    "team2": 184764.05,
+    "total": 351292.03,
     "plan": 785000.0
   },
   "awards": {
