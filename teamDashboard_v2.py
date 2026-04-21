@@ -28,7 +28,7 @@ SOURCE_FILES = {
     "lm_quotes": r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\L&M Quoted Count & Margin Summary Report.xlsx",
     "prejob":    r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\PreJob Checklist.xlsx",
     "nearmiss":  r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\Near Miss Summary Report.xlsx",
-    "crc":       r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\CRC Summary Report.xlsx",
+    "crc":       r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\CRC Summary Report David.csv",
     "debrief":   r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\Debriefing.xlsx",
     "roster":    r"C:\\Users\\jwagemd\\OneDrive - Johnson Controls\\Documents\\Team Dashboard Files\\Excel Reports\\Roster.xlsx",
 }
@@ -58,20 +58,55 @@ def load_wb(key: str):
     if not os.path.exists(path):
         log(f"WARNING: File not found — {path}")
         return None
-    # Siebel sometimes exports HTML-wrapped XML with an .xlsx extension.
-    # Try openpyxl first; fall back to pandas/xlrd if the zip structure is broken.
+    # Choose reader by file extension for more robust handling.
+    ext = os.path.splitext(path)[1].lower()
     try:
-        return openpyxl.load_workbook(path, data_only=True)
-    except Exception as e1:
-        log(f"WARNING: openpyxl failed on '{key}' ({e1}), trying xlrd fallback...")
-        try:
+        # CSV files -> pandas.read_csv
+        if ext == '.csv':
+            import pandas as pd
+            df = pd.read_csv(path)
+            log(f"CSV parsed for '{key}' via pandas")
+            return _DataFrameWorkbook(df)
+
+        # Modern Excel formats: try openpyxl first (preferred for .xlsx/.xlsm/etc)
+        if ext in ('.xlsx', '.xlsm', '.xltx', '.xltm'):
+            try:
+                return openpyxl.load_workbook(path, data_only=True)
+            except Exception as e:
+                log(f"WARNING: openpyxl failed on '{key}' ({e}), trying pandas.read_excel...")
+                import pandas as pd
+                df = pd.read_excel(path, engine='openpyxl')
+                log(f"  pandas.read_excel(openpyxl) succeeded for '{key}' — returning DataFrame wrapper")
+                return _DataFrameWorkbook(df)
+
+        # Legacy .xls -> use xlrd via pandas (xlrd must be installed)
+        if ext == '.xls':
             import pandas as pd
             df = pd.read_excel(path, engine='xlrd')
-            log(f"  xlrd fallback succeeded for '{key}' — returning DataFrame wrapper")
+            log(f"XLS parsed for '{key}' via pandas+xlrd")
             return _DataFrameWorkbook(df)
-        except Exception as e2:
-            log(f"ERROR: Could not open '{key}' with any engine: {e2}")
-            return None
+
+        # Unknown extension: try sensible fallbacks in order.
+        try:
+            return openpyxl.load_workbook(path, data_only=True)
+        except Exception:
+            try:
+                import pandas as pd
+                # try Excel first
+                df = pd.read_excel(path, engine='openpyxl')
+                return _DataFrameWorkbook(df)
+            except Exception:
+                try:
+                    import pandas as pd
+                    df = pd.read_csv(path)
+                    return _DataFrameWorkbook(df)
+                except Exception as e:
+                    log(f"ERROR: Could not open '{key}' with any engine: {e}")
+                    return None
+    except ImportError as ie:
+        # Helpful message if pandas/xlrd/openpyxl missing
+        log(f"ERROR: Missing dependency when opening '{key}': {ie}. Install pandas and xlrd/openpyxl as needed.")
+        return None
 
 
 class _DataFrameSheet:
