@@ -93,6 +93,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;ove
 .ticker-item{display:flex;gap:8px;align-items:center;white-space:nowrap;color:#e8edf5}
 .ticker-name{font-weight:600}
 .ticker-dot{width:6px;height:6px;border-radius:50%;background:var(--muted2)}
+/* Ticker color coding (uses existing dashboard colors) */
+.ticker-color.green{color:var(--accent2)}
+.ticker-color.yellow{color:var(--accent)}
+.ticker-color.red{color:var(--accent3)}
+
 @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 /* Error / loading states */
@@ -270,11 +275,14 @@ function renderTicker(techs) {
   const track  = document.getElementById('tickerTrack');
   track.innerHTML = '';
   if (!techs || !techs.length) { ticker.style.display = 'none'; return; }
+
   for (let pass = 0; pass < 2; pass++) {
     techs.forEach(t => {
+      const pct = Math.round((t.debriefPct || 0) * 100);
+      const cls = (pct >= 80) ? 'green' : (pct >= 60) ? 'yellow' : 'red';
       const item = document.createElement('div');
       item.className = 'ticker-item';
-      item.innerHTML = `<span class="ticker-name">${t.name}</span><span> ${Math.round((t.debriefPct || 0) * 100)}%</span><span class="ticker-dot"></span>`;
+      item.innerHTML = `<span class="ticker-name ticker-color ${cls}">${t.name}</span><span class="ticker-color ${cls}"> ${pct}%</span><span class="ticker-dot"></span>`;
       track.appendChild(item);
     });
   }

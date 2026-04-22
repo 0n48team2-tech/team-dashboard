@@ -309,33 +309,73 @@ def parse_quotes(roster: dict, month_str: str) -> list:
 # ===================== AWARDS (previous month) =====================
 
 def compute_awards(roster: dict) -> dict:
+    """Compute previous-month quote champs.
+
+    Fixes two common issues:
+      1) Duplicate lines in the export can inflate counts/dollars if we simply count rows.
+      2) Ties are broken consistently:
+         - By Quotes: quotes -> dollars -> name
+         - By Dollars: dollars -> quotes -> name
+
+    Rules:
+      - Quote count = number of UNIQUE 'Quote Name' values per tech.
+      - Dollars = sum of 'Price After Discount' once per unique Quote Name
+                 (uses the max seen for that quote to avoid duplicates).
+    """
     target = prev_month_str()
     wb = load_wb('lm_quotes')
     empty = {'prev_month': target, 'by_quotes': ('', 0), 'by_dollars': ('', 0.0)}
     if not wb:
         return empty
+
     ws = wb.active
     h = header_map(ws)
-    need = ['Quote Month', 'Employee Name', 'Price After Discount']
-    if any(k not in h for k in need):
+    need = ['Quote Month', 'Employee Name', 'Quote Name', 'Price After Discount']
+    missing = [k for k in need if k not in h]
+    if missing:
+        log(f"Awards: missing required columns: {missing}")
         return empty
     idx = {k: h[k] for k in need}
-    agg_q = defaultdict(int)
-    agg_d = defaultdict(float)
+
+    agg = defaultdict(lambda: {'quotes': set(), 'rev_by_quote': {}})
+
     for r in ws.iter_rows(min_row=2, values_only=True):
         if not r or not any(r):
             continue
         if parse_month_cell(r[idx['Quote Month']]) != target:
             continue
+
         matched = match_to_roster(normalize_name(r[idx['Employee Name']]), roster)
         if not matched:
             continue
         dn = roster[matched]
-        agg_q[dn] += 1
-        agg_d[dn] += float(r[idx['Price After Discount']] or 0)
-    by_q = max(agg_q.items(), key=lambda x: (x[1], x[0])) if agg_q else ('', 0)
-    by_d = max(agg_d.items(), key=lambda x: (x[1], x[0])) if agg_d else ('', 0.0)
-    log(f"Awards computed for {target}: quotes→{by_q[0]}, dollars→{by_d[0]}")
+
+        qid = str(r[idx['Quote Name']] or '').strip()
+        if not qid:
+            continue
+
+        rev = float(r[idx['Price After Discount']] or 0.0)
+        node = agg[dn]
+        node['quotes'].add(qid)
+        prev = node['rev_by_quote'].get(qid, 0.0)
+        node['rev_by_quote'][qid] = rev if rev > prev else prev
+
+    metrics = {}
+    for dn, v in agg.items():
+        qcount = len(v['quotes'])
+        dollars = float(sum(v['rev_by_quote'].values()))
+        metrics[dn] = (qcount, round(dollars, 2))
+
+    if not metrics:
+        return empty
+
+    by_q_name, by_q_vals = sorted(metrics.items(), key=lambda it: (-it[1][0], -it[1][1], it[0]))[0]
+    by_d_name, by_d_vals = sorted(metrics.items(), key=lambda it: (-it[1][1], -it[1][0], it[0]))[0]
+
+    by_q = (by_q_name, int(by_q_vals[0]))
+    by_d = (by_d_name, float(by_d_vals[1]))
+
+    log(f"Awards computed for {target}: quotes→{by_q[0]} ({by_q[1]}), dollars→{by_d[0]} (${by_d[1]:,.2f})")
     return {'prev_month': target, 'by_quotes': by_q, 'by_dollars': by_d}
 
 # ===================== SAFETY =====================
