@@ -1,13 +1,13 @@
 {
-  "generated": "2026-04-21T08:03:20",
+  "generated": "2026-04-22T11:20:05",
   "month": "2026 / 04",
   "teamName": "Team 2",
   "branch": "Denver CO - 0N48",
   "techs": [
     {
       "name": "M. Anderson",
-      "quotes": 1,
-      "revenue": 3607.3,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 0.9167,
       "required": 12,
       "completed": 15,
@@ -116,8 +116,8 @@
     },
     {
       "name": "D. Spontarelli",
-      "quotes": 1,
-      "revenue": 2707.0,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 0.9167,
       "required": 12,
       "completed": 11,
@@ -136,20 +136,20 @@
     }
   ],
   "revenue": {
-    "team1": 166527.98,
-    "team2": 184764.05,
-    "total": 351292.03,
+    "team1": 191471.23,
+    "team2": 253568.84,
+    "total": 445040.07,
     "plan": 785000.0
   },
   "awards": {
     "prevMonth": "2026 / 03",
     "byQuotes": {
-      "name": "M. Winkleblack",
-      "count": 5
+      "name": "B. Robinson",
+      "count": 3
     },
     "byDollars": {
-      "name": "D. Spontarelli",
-      "dollars": 53690.0
+      "name": "B. Robinson",
+      "dollars": 24731.64
     }
   }
 }
