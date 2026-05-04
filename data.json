@@ -1,48 +1,48 @@
 {
-  "generated": "2026-04-27T15:40:59",
-  "month": "2026 / 04",
+  "generated": "2026-05-04T09:43:27",
+  "month": "2026 / 05",
   "teamName": "Team 2",
   "branch": "Denver CO - 0N48",
   "techs": [
     {
       "name": "M. Anderson",
-      "quotes": 2,
-      "revenue": 15124.09,
-      "safetyPct": 0.875,
-      "required": 16,
-      "completed": 18,
+      "quotes": 0,
+      "revenue": 0.0,
+      "safetyPct": 0.85,
+      "required": 20,
+      "completed": 21,
       "nearMiss": true,
-      "debriefPct": 0.72
+      "debriefPct": 0.6667
     },
     {
       "name": "C. Atkin",
-      "quotes": 7,
-      "revenue": 113194.12,
-      "safetyPct": 0.9333,
-      "required": 15,
-      "completed": 19,
+      "quotes": 0,
+      "revenue": 0.0,
+      "safetyPct": 0.9474,
+      "required": 19,
+      "completed": 24,
       "nearMiss": true,
-      "debriefPct": 1.0
+      "debriefPct": 0.9545
     },
     {
       "name": "B. Credo",
-      "quotes": 1,
-      "revenue": 16649.67,
+      "quotes": 0,
+      "revenue": 0.0,
       "safetyPct": 0.75,
-      "required": 16,
-      "completed": 14,
+      "required": 20,
+      "completed": 18,
       "nearMiss": true,
-      "debriefPct": 0.6
+      "debriefPct": 0.6957
     },
     {
       "name": "M. Evelyn",
       "quotes": 0,
       "revenue": 0.0,
-      "safetyPct": 0.9412,
-      "required": 17,
-      "completed": 18,
+      "safetyPct": 1.0,
+      "required": 21,
+      "completed": 25,
       "nearMiss": true,
-      "debriefPct": 0.8261
+      "debriefPct": 0.8519
     },
     {
       "name": "J. Garcia",
@@ -52,104 +52,104 @@
       "required": 15,
       "completed": 16,
       "nearMiss": true,
-      "debriefPct": 0.75
+      "debriefPct": 0.7143
     },
     {
       "name": "T. Koski",
-      "quotes": 0,
-      "revenue": 0.0,
-      "safetyPct": 0.9091,
-      "required": 11,
-      "completed": 12,
-      "nearMiss": true,
-      "debriefPct": 0.9091
-    },
-    {
-      "name": "K. Lopez",
-      "quotes": 1,
-      "revenue": 16478.65,
-      "safetyPct": 0.6667,
-      "required": 18,
-      "completed": 12,
-      "nearMiss": true,
-      "debriefPct": 0.5789
-    },
-    {
-      "name": "J. Marks",
-      "quotes": 9,
-      "revenue": 88943.44,
-      "safetyPct": 0.9444,
-      "required": 18,
-      "completed": 19,
-      "nearMiss": true,
-      "debriefPct": 0.4
-    },
-    {
-      "name": "A. McKenney",
-      "quotes": 0,
-      "revenue": 0.0,
-      "safetyPct": 0.9412,
-      "required": 17,
-      "completed": 16,
-      "nearMiss": true,
-      "debriefPct": 0.9
-    },
-    {
-      "name": "M. Morales",
-      "quotes": 0,
-      "revenue": 0.0,
-      "safetyPct": 0.8333,
-      "required": 18,
-      "completed": 24,
-      "nearMiss": true,
-      "debriefPct": 1.0
-    },
-    {
-      "name": "B. Robinson",
-      "quotes": 4,
-      "revenue": 24044.76,
-      "safetyPct": 1.0,
-      "required": 16,
-      "completed": 17,
-      "nearMiss": true,
-      "debriefPct": 0.8571
-    },
-    {
-      "name": "D. Spontarelli",
-      "quotes": 1,
-      "revenue": 2707.0,
-      "safetyPct": 0.9375,
-      "required": 16,
-      "completed": 15,
-      "nearMiss": true,
-      "debriefPct": 0.65
-    },
-    {
-      "name": "M. Winkleblack",
       "quotes": 0,
       "revenue": 0.0,
       "safetyPct": 0.9333,
       "required": 15,
       "completed": 16,
       "nearMiss": true,
-      "debriefPct": 0.875
+      "debriefPct": 0.9333
+    },
+    {
+      "name": "K. Lopez",
+      "quotes": 0,
+      "revenue": 0.0,
+      "safetyPct": 0.6316,
+      "required": 19,
+      "completed": 12,
+      "nearMiss": true,
+      "debriefPct": 0.6
+    },
+    {
+      "name": "J. Marks",
+      "quotes": 0,
+      "revenue": 0.0,
+      "safetyPct": 0.9524,
+      "required": 21,
+      "completed": 22,
+      "nearMiss": true,
+      "debriefPct": 0.4222
+    },
+    {
+      "name": "A. McKenney",
+      "quotes": 0,
+      "revenue": 0.0,
+      "safetyPct": 0.9524,
+      "required": 21,
+      "completed": 20,
+      "nearMiss": true,
+      "debriefPct": 0.84
+    },
+    {
+      "name": "M. Morales",
+      "quotes": 0,
+      "revenue": 0.0,
+      "safetyPct": 0.8636,
+      "required": 22,
+      "completed": 31,
+      "nearMiss": true,
+      "debriefPct": 1.0
+    },
+    {
+      "name": "B. Robinson",
+      "quotes": 0,
+      "revenue": 0.0,
+      "safetyPct": 1.0,
+      "required": 20,
+      "completed": 21,
+      "nearMiss": true,
+      "debriefPct": 0.8846
+    },
+    {
+      "name": "D. Spontarelli",
+      "quotes": 0,
+      "revenue": 0.0,
+      "safetyPct": 0.9,
+      "required": 20,
+      "completed": 18,
+      "nearMiss": true,
+      "debriefPct": 0.6842
+    },
+    {
+      "name": "M. Winkleblack",
+      "quotes": 0,
+      "revenue": 0.0,
+      "safetyPct": 0.9444,
+      "required": 18,
+      "completed": 19,
+      "nearMiss": true,
+      "debriefPct": 0.8947
     }
   ],
   "revenue": {
-    "team1": 190731.94,
-    "team2": 372472.44,
-    "total": 563204.38,
+    "team1": 361182.45,
+    "team2": 397044.74,
+    "total": 758227.19,
     "plan": 785000.0
   },
   "awards": {
-    "prevMonth": "2026 / 03",
+    "prevMonth": "2026 / 04",
     "byQuotes": {
-      "name": "M. Winkleblack",
-      "count": 5
+      "name": "J. Marks",
+      "count": 10
     },
     "byDollars": {
-      "name": "D. Spontarelli",
-      "dollars": 53690.0
+      "name": "J. Marks",
+      "dollars": 91574.89
     }
   }
 }
