@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Team Scorecard</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0a0c0f; --panel:#111418; --panel2:#161b22; --border:#1e2530;
+  --accent:#f0a500; --accent2:#00c9a7; --accent3:#e05c5c; --accent4:#5c9be0;
+  --text:#e8edf5; --muted:#5a6478; --muted2:#8a93a8;
+  --gold1:#f0a500; --gold2:#ffcc44; --teal:#00c9a7; --danger:#e05c5c;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;overflow:hidden}
+
+/* === Fit-to-screen wrapper === */
+#fitWrap{position:absolute;left:0;top:0;transform-origin:top left;width:1920px;height:1032px;}
+
+/* === Core layout === */
+.dashboard{position:relative;display:grid;grid-template-rows:64px 1fr 1fr;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:12px;height:100%;width:100%}
+.header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);padding-bottom:10px}
+.header-title{font-family:'Bebas Neue',sans-serif;font-size:42px;letter-spacing:.08em}
+.header-meta{display:flex;align-items:center;gap:20px}
+.sync-time{font-size:12px;color:var(--muted);letter-spacing:.1em}
+
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:6px;padding:18px 20px;display:flex;flex-direction:column;overflow:hidden;position:relative}
+.panel-accent-bar{position:absolute;top:0;left:0;right:0;height:2px}
+.panel-label{font-size:14px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin-bottom:12px}
+
+/* Leaderboard */
+.leaderboard{grid-column:1;grid-row:2/4}
+.lb-list{display:flex;flex-direction:column;gap:8px;flex:1;overflow:hidden}
+.lb-row{display:grid;grid-template-columns:26px 1fr 64px 48px;align-items:center;gap:10px;padding:10px 12px;background:var(--panel2);border-radius:6px;border:1px solid var(--border)}
+.lb-row.top1{border-color:var(--accent);background:linear-gradient(90deg,rgba(240,165,0,.07) 0%,var(--panel2) 100%)}
+.champion{margin-top:12px;padding:14px;border:1px dashed var(--border);border-radius:6px;background:rgba(240,165,0,0.06);display:flex;align-items:center;justify-content:space-between}
+.champ-left{display:flex;align-items:center;gap:12px}
+.big-crown{font-size:34px;filter:drop-shadow(0 2px 6px rgba(240,165,0,.55))}
+.champ-name{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:.04em}
+.champ-sub{font-size:13px;color:var(--muted2)}
+.champ-toggle{display:flex;gap:8px}
+.toggle-btn{border:1px solid var(--border);background:var(--panel2);color:var(--muted2);padding:6px 10px;border-radius:5px;cursor:pointer;font-size:12px}
+.toggle-btn.active{background:var(--accent);color:#0a0c0f;border-color:transparent;font-weight:800}
+
+/* Participation */
+.participation{grid-column:2;grid-row:2}
+.part-wrap{flex:1;display:flex;align-items:center;justify-content:center}
+.part-center{display:flex;flex-direction:column;align-items:center;gap:6px}
+.part-pct{font-family:'Bebas Neue',sans-serif;font-size:86px;color:var(--teal);letter-spacing:.04em}
+.part-sub{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2)}
+.part-stats{display:flex;gap:22px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.part-mini{display:flex;flex-direction:column;align-items:center}
+.part-mini .val{font-family:'DM Mono',monospace;font-size:16px;color:var(--text)}
+.part-mini .lab{font-size:12px;color:var(--muted2);letter-spacing:.1em;text-transform:uppercase}
+
+/* Revenue */
+.revenue{grid-column:3;grid-row:2}
+.rev-box{flex:1;display:flex;flex-direction:column;justify-content:center;gap:12px}
+.rev-row{display:flex;justify-content:space-between;align-items:baseline;gap:20px}
+.rev-col .lbl{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.rev-col .val{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:.04em}
+.rev-col .val.plan{color:#9aa3b5}
+.rev-col .val.actual{color:var(--accent)}
+.bar{height:16px;background:var(--border);border-radius:10px;overflow:hidden}
+.bar-fill{height:100%;background:linear-gradient(90deg,var(--gold1),var(--gold2));border-radius:10px;transition:width .8s cubic-bezier(.16,1,.3,1)}
+.rev-foot{display:flex;justify-content:space-between;align-items:center}
+.rev-foot .label{font-size:12px;color:var(--muted);letter-spacing:.14em;text-transform:uppercase}
+.rev-foot .gap{font-family:'DM Mono',monospace;font-size:18px}
+
+/* Safety */
+.safety{grid-column:2/4;grid-row:3}
+.safety-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:10px;flex:1;overflow:hidden}
+.safety-card{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:10px}
+.safety-name{font-size:16px;font-weight:700;letter-spacing:.04em;color:#e8edf5;text-align:center}
+.ring-wrap{position:relative;width:78px;height:78px}
+.ring-wrap svg{transform:rotate(-90deg);width:78px;height:78px}
+.ring-bg{fill:none;stroke:var(--border);stroke-width:6}
+.ring-fill{fill:none;stroke-width:6;stroke-linecap:round}
+.ring-fill.green{stroke:var(--accent2)}
+.ring-fill.yellow{stroke:var(--accent)}
+.ring-fill.red{stroke:var(--accent3)}
+.ring-center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:18px;font-weight:700}
+.nm-badge{font-size:26px;filter:grayscale(1) brightness(0.6)}
+.nm-badge.lit{filter:none}
+
+/* Debrief ticker */
+.ticker{position:fixed;left:0;right:0;bottom:0;height:48px;z-index:9999;border-top:1px solid var(--border);background:linear-gradient(90deg,rgba(92,155,224,0.15),rgba(240,165,0,0.15));display:flex;align-items:center;}
+.ticker-label{flex:0 0 220px;height:100%;display:flex;align-items:center;justify-content:flex-start;padding:0 14px;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted2);border-right:1px solid var(--border);background:rgba(10,12,15,0.65);position:relative;z-index:2}
+.ticker-viewport{flex:1 1 auto;height:100%;overflow:hidden;position:relative;z-index:1}
+.ticker-track{display:flex;gap:28px;position:absolute;top:0;left:0;height:100%;align-items:center;animation:scroll 24s linear infinite}
+.ticker-item{display:flex;gap:8px;align-items:center;white-space:nowrap;color:#e8edf5}
+.ticker-name{font-weight:600}
+.ticker-dot{width:6px;height:6px;border-radius:50%;background:var(--muted2)}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* Error / loading states */
+.state-overlay{position:fixed;inset:0;background:#0a0c0fee;display:flex;align-items:center;justify-content:center;z-index:100}
+.state-box{max-width:560px;width:100%;background:#111418;border:1px solid var(--border);border-radius:8px;padding:32px;text-align:center}
+.state-box h2{font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:.08em;margin-bottom:12px}
+.state-box p{color:var(--muted2);font-size:15px;line-height:1.6}
+.state-box .detail{margin-top:12px;font-family:'DM Mono',monospace;font-size:13px;color:var(--accent3);background:#0a0c0f;padding:10px 14px;border-radius:4px;text-align:left;white-space:pre-wrap;word-break:break-all}
+.spinner{width:40px;height:40px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+
+<!-- Loading overlay -->
+<div class="state-overlay" id="loadingOverlay">
+  <div class="state-box">
+    <div class="spinner"></div>
+    <h2 style="color:var(--accent)">Loading Dashboard</h2>
+    <p>Fetching latest data...</p>
+  </div>
+</div>
+
+<!-- Error overlay (hidden by default) -->
+<div class="state-overlay" id="errorOverlay" style="display:none">
+  <div class="state-box">
+    <h2 style="color:var(--accent3)">⚠ Could Not Load Data</h2>
+    <p>Make sure <code>data.json</code> is in the same folder as this HTML file, or that the sync script has run successfully.</p>
+    <div class="detail" id="errorDetail"></div>
+    <p style="margin-top:16px;font-size:13px;color:var(--muted)">The page will retry automatically every 60 seconds.</p>
+  </div>
+</div>
+
+<!-- Scaled wrapper -->
+<div id="fitWrap">
+  <div class="dashboard" id="dash" style="visibility:hidden">
+    <div class="header">
+      <div class="header-title" id="headerTitle">Team <span style="color:var(--accent)">Scorecard</span></div>
+      <div class="header-meta">
+        <div class="sync-time" id="syncTime"></div>
+        <div id="monthLabel" style="color:var(--muted2)"></div>
+      </div>
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="panel leaderboard">
+      <div class="panel-accent-bar" style="background:var(--accent)"></div>
+      <div class="panel-label">Quote Leaderboard — MTD</div>
+      <div class="lb-list" id="lb"></div>
+      <div class="champion" id="champ">
+        <div class="champ-left">
+          <div class="big-crown">👑</div>
+          <div>
+            <div class="champ-name" id="champName">—</div>
+            <div class="champ-sub" id="champMeta">Prev Month • —</div>
+          </div>
+        </div>
+        <div class="champ-toggle">
+          <button class="toggle-btn active" id="btnByQuotes" onclick="setChampionMode('quotes')">By Quotes</button>
+          <button class="toggle-btn" id="btnByDollars" onclick="setChampionMode('dollars')">By Dollars</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Participation -->
+    <div class="panel participation">
+      <div class="panel-accent-bar" style="background:var(--accent2)"></div>
+      <div class="panel-label">Team Participation</div>
+      <div class="part-wrap">
+        <div class="part-center">
+          <div class="part-pct" id="partPct">0%</div>
+          <div class="part-sub">of team submitted quotes this month</div>
+          <div class="part-stats">
+            <div class="part-mini"><div class="val" id="partIn">-</div><div class="lab">Participating</div></div>
+            <div class="part-mini"><div class="val" id="partOut" style="color:var(--accent3)">-</div><div class="lab">Not Yet</div></div>
+            <div class="part-mini"><div class="val" id="totalQuotes">-</div><div class="lab">Total Quotes</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Revenue -->
+    <div class="panel revenue">
+      <div class="panel-accent-bar" style="background:linear-gradient(90deg,var(--gold1),var(--gold2))"></div>
+      <div class="panel-label">Denver L&amp;M — Plan vs Actual</div>
+      <div class="rev-box">
+        <div class="rev-row">
+          <div class="rev-col"><div class="lbl">Team 1 L&amp;M</div><div class="val" id="revTeam1">$-</div></div>
+          <div class="rev-col"><div class="lbl">Team 2 L&amp;M</div><div class="val" id="revTeam2">$-</div></div>
+        </div>
+        <div class="rev-row">
+          <div class="rev-col"><div class="lbl">Plan</div><div class="val plan" id="revPlan">$-</div></div>
+          <div class="rev-col" style="text-align:right"><div class="lbl">Total</div><div class="val actual" id="revActual">$-</div></div>
+        </div>
+        <div class="bar"><div class="bar-fill" id="revBar" style="width:0%"></div></div>
+        <div class="rev-foot">
+          <div class="label">Month to Date</div>
+          <div class="label">Progress <span id="revPct" style="margin-left:6px;color:#e8edf5">0%</span></div>
+        </div>
+        <div class="rev-foot" style="margin-top:6px">
+          <div class="label">Gap to Plan</div>
+          <div class="gap" id="revGap">$-</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Safety -->
+    <div class="panel safety">
+      <div class="panel-accent-bar" style="background:var(--accent4)"></div>
+      <div class="panel-label">Safety &amp; Near Miss — MTD</div>
+      <div class="safety-grid" id="sgrid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Debrief ticker (outside scaled wrapper, stays crisp) -->
+<div class="ticker" id="ticker" style="display:none">
+  <div class="ticker-label">On-time debriefing</div>
+  <div class="ticker-viewport"><div class="ticker-track" id="tickerTrack"></div></div>
+</div>
+
+<script>
+// ─── Constants ───────────────────────────────────────────────────────────────
+const AUTO_REFRESH_MS = 5 * 60 * 1000; // re-fetch data.json every 5 minutes
+const BASE_W = 1920, BASE_H = 1032, TICKER_H = 48;
+const moneyFmt = n => '$' + Math.round(Number(n || 0)).toLocaleString();
+
+// ─── Data URL ────────────────────────────────────────────────────────────────
+// Resolves data.json relative to this HTML file, so it works whether the page
+// is served from GitHub Pages or opened as a local file:// URL.
+function dataUrl() {
+  const base = window.location.href.split('?')[0].replace(/\/[^\/]*$/, '/');
+  return base + 'data.json';
+}
+
+// ─── Fit-to-screen ───────────────────────────────────────────────────────────
+function fit() {
+  const wrap = document.getElementById('fitWrap');
+  const sx = window.innerWidth / BASE_W;
+  const sy = (window.innerHeight - TICKER_H) / BASE_H;
+  const s  = Math.min(sx, sy);
+  wrap.style.transform = `scale(${s})`;
+  wrap.style.left = ((window.innerWidth  - BASE_W * s) / 2) + 'px';
+  wrap.style.top  = ((window.innerHeight - (BASE_H * s + TICKER_H)) / 2) + 'px';
+}
+window.addEventListener('resize', () => requestAnimationFrame(fit));
+
+// ─── Champion panel ──────────────────────────────────────────────────────────
+let AWARDS = { prev:'', byQuotes:{name:'',value:0}, byDollars:{name:'',value:0} };
+let MODE = 'quotes';
+let CHAMP_TIMER = null;
+
+function setChampionMode(m) {
+  MODE = m;
+  document.getElementById('btnByQuotes').classList.toggle('active', m === 'quotes');
+  document.getElementById('btnByDollars').classList.toggle('active', m === 'dollars');
+  renderChampion();
+  if (CHAMP_TIMER) { clearInterval(CHAMP_TIMER); CHAMP_TIMER = null; }
+  if (AWARDS.byQuotes.name && AWARDS.byDollars.name) {
+    CHAMP_TIMER = setInterval(() => setChampionMode(MODE === 'quotes' ? 'dollars' : 'quotes'), 5000);
+  }
+}
+
+function renderChampion() {
+  const isQ = MODE === 'quotes';
+  const name = isQ ? AWARDS.byQuotes.name  : AWARDS.byDollars.name;
+  const val  = isQ ? (AWARDS.byQuotes.value + ' quotes') : ('$' + Math.round(AWARDS.byDollars.value).toLocaleString());
+  document.getElementById('champName').textContent = name || '—';
+  document.getElementById('champMeta').textContent = (AWARDS.prev ? 'Prev Month • ' + AWARDS.prev + ' • ' : 'Prev Month • ') + (val || '—');
+}
+
+// ─── Ticker ──────────────────────────────────────────────────────────────────
+function renderTicker(techs) {
+  const ticker = document.getElementById('ticker');
+  const track  = document.getElementById('tickerTrack');
+  track.innerHTML = '';
+  if (!techs || !techs.length) { ticker.style.display = 'none'; return; }
+  for (let pass = 0; pass < 2; pass++) {
+    techs.forEach(t => {
+      const item = document.createElement('div');
+      item.className = 'ticker-item';
+      item.innerHTML = `<span class="ticker-name">${t.name}</span><span> ${Math.round((t.debriefPct || 0) * 100)}%</span><span class="ticker-dot"></span>`;
+      track.appendChild(item);
+    });
+  }
+  ticker.style.display = 'flex';
+}
+
+// ─── Main render ─────────────────────────────────────────────────────────────
+function render(data) {
+  // Header
+  const teamName = data.teamName || 'Team 2';
+  document.getElementById('headerTitle').innerHTML =
+    teamName + ' <span style="color:var(--accent)">Scorecard</span>';
+  document.getElementById('monthLabel').textContent = data.month || '';
+  document.getElementById('syncTime').textContent =
+    data.generated ? 'Synced ' + new Date(data.generated).toLocaleString('en-US', {month:'short', day:'numeric', hour:'numeric', minute:'2-digit'}) : '';
+
+  const techs = data.techs || [];
+
+  // Participation
+  const participating = techs.filter(t => t.quotes > 0).length;
+  const notYet = techs.length - participating;
+  const partPct = techs.length ? Math.round(participating / techs.length * 100) : 0;
+  document.getElementById('partPct').textContent = partPct + '%';
+  document.getElementById('partIn').textContent  = participating;
+  document.getElementById('partOut').textContent = notYet;
+  document.getElementById('totalQuotes').textContent = techs.reduce((s, t) => s + (t.quotes || 0), 0);
+
+  // Revenue
+  const rev = data.revenue || {};
+  const plan = Number(rev.plan) || 0;
+  const t1   = Number(rev.team1) || 0;
+  const t2   = Number(rev.team2) || 0;
+  const actual = Number(rev.total) || (t1 + t2);
+  const pct  = plan > 0 ? Math.min(actual / plan, 1) : 0;
+  const gap  = actual - plan;
+  document.getElementById('revTeam1').textContent  = moneyFmt(t1);
+  document.getElementById('revTeam2').textContent  = moneyFmt(t2);
+  document.getElementById('revPlan').textContent   = moneyFmt(plan);
+  document.getElementById('revActual').textContent = moneyFmt(actual);
+  document.getElementById('revBar').style.width    = (pct * 100) + '%';
+  document.getElementById('revPct').textContent    = Math.round((plan > 0 ? actual / plan : 0) * 100) + '%';
+  const gapEl = document.getElementById('revGap');
+  if (gap >= 0) { gapEl.textContent = moneyFmt(gap) + ' over';  gapEl.style.color = 'var(--accent2)'; }
+  else          { gapEl.textContent = moneyFmt(Math.abs(gap)) + ' under'; gapEl.style.color = 'var(--accent3)'; }
+
+  // Awards
+  const aw = data.awards || {};
+  AWARDS = {
+    prev:      aw.prevMonth  || '',
+    byQuotes:  { name: (aw.byQuotes  || {}).name  || '', value: (aw.byQuotes  || {}).count   || 0 },
+    byDollars: { name: (aw.byDollars || {}).name  || '', value: (aw.byDollars || {}).dollars  || 0 },
+  };
+  setChampionMode('quotes'); // resets timer and renders
+
+  // Leaderboard
+  const lb = document.getElementById('lb');
+  lb.innerHTML = '';
+  const sorted = [...techs].sort((a, b) => (b.quotes - a.quotes) || a.name.localeCompare(b.name));
+  const maxQ = sorted[0]?.quotes || 1;
+  sorted.forEach((t, i) => {
+    const row = document.createElement('div');
+    row.className = 'lb-row' + (i === 0 && t.quotes > 0 ? ' top1' : '');
+    const w = (t.quotes / maxQ) * 100;
+    row.innerHTML = `
+      <div style="text-align:center;color:#8a93a8">${t.quotes > 0 ? i + 1 : '—'}</div>
+      <div>
+        <div style="font-size:18px;font-weight:600">${t.name}</div>
+        <div style="height:5px;background:#1e2530;border-radius:3px;overflow:hidden">
+          <div style="height:5px;width:${w}%;background:${i === 0 ? 'var(--accent)' : 'var(--accent2)'}"></div>
+        </div>
+      </div>
+      <div style="font-size:12px;color:#8a93a8;text-align:right">${t.quotes > 0 ? t.quotes + ' quotes' : 'none yet'}</div>
+      <div style="text-align:right;font-family:'DM Mono',monospace">${t.quotes > 0 ? t.quotes : '—'}</div>`;
+    lb.appendChild(row);
+  });
+
+  // Safety grid
+  const grid = document.getElementById('sgrid');
+  grid.innerHTML = '';
+  const C = 2 * Math.PI * (78 / 2 - 6);
+  sorted.forEach(t => {
+    const pct    = t.safetyPct || 0;
+    const color  = pct >= .85 ? 'green' : pct >= .65 ? 'yellow' : 'red';
+    const offset = C * (1 - pct);
+    const card   = document.createElement('div');
+    card.className = 'safety-card';
+    card.innerHTML = `
+      <div class="safety-name">${t.name}</div>
+      <div class="ring-wrap">
+        <svg viewBox="0 0 78 78">
+          <circle class="ring-bg" cx="39" cy="39" r="33"/>
+          <circle class="ring-fill ${color}" cx="39" cy="39" r="33"
+            style="stroke-dasharray:${C};stroke-dashoffset:${offset}"></circle>
+        </svg>
+        <div class="ring-center">${Math.round(pct * 100)}%</div>
+      </div>
+      <div class="nm-badge ${t.nearMiss ? 'lit' : ''}" title="${t.nearMiss ? 'Near Miss completed' : 'Near Miss pending'}">🏆</div>`;
+    grid.appendChild(card);
+  });
+
+  renderTicker(sorted);
+  document.getElementById('dash').style.visibility = 'visible';
+  requestAnimationFrame(fit);
+}
+
+// ─── Data loading ─────────────────────────────────────────────────────────────
+async function loadData() {
+  const url = dataUrl();
+  // Cache-bust so the Pi always gets fresh data after a push
+  const resp = await fetch(url + '?t=' + Date.now());
+  if (!resp.ok) throw new Error(`HTTP ${resp.status} fetching ${url}`);
+  return await resp.json();
+}
+
+async function refresh() {
+  try {
+    const data = await loadData();
+    render(data);
+    document.getElementById('loadingOverlay').style.display = 'none';
+    document.getElementById('errorOverlay').style.display  = 'none';
+  } catch (err) {
+    document.getElementById('loadingOverlay').style.display = 'none';
+    document.getElementById('errorOverlay').style.display  = 'flex';
+    document.getElementById('errorDetail').textContent = String(err);
+    requestAnimationFrame(fit);
+  }
+}
+
+// ─── Boot ─────────────────────────────────────────────────────────────────────
+requestAnimationFrame(fit);
+refresh();
+setInterval(refresh, AUTO_REFRESH_MS);
+</script>
+</body>
+</html>

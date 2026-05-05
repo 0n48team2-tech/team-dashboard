@@ -26,7 +26,7 @@ if errorlevel 1 (
 echo.
 echo [2/3] Pushing data.json to GitHub...
 cd /d "%REPO_DIR%"
-git add data.json
+git add data.json techDashboard_v2.html
 git diff --cached --quiet
 if errorlevel 1 (
     for /f "tokens=*" %%i in ('powershell -command "Get-Date -Format \"yyyy-MM-dd HH:mm\""') do set TIMESTAMP=%%i
