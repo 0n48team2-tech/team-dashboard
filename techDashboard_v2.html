@@ -33,22 +33,22 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;ove
 
 /* Leaderboard */
 .leaderboard{grid-column:1;grid-row:2/4}
-.lb-list{display:flex;flex-direction:column;gap:calc(8px * var(--lb-scale));flex:1;overflow:hidden}
+.lb-list{display:flex;flex-direction:column;gap:calc(8px * var(--lb-scale));flex:1;overflow:hidden;min-height:0}
 .lb-row{display:grid;grid-template-columns:calc(26px * var(--lb-scale)) 1fr calc(64px * var(--lb-scale)) calc(48px * var(--lb-scale));align-items:center;gap:calc(10px * var(--lb-scale));padding:calc(10px * var(--lb-scale)) calc(12px * var(--lb-scale));background:var(--panel2);border-radius:6px;border:1px solid var(--border)}
 .lb-row.top1{border-color:var(--accent);background:linear-gradient(90deg,rgba(240,165,0,.07) 0%,var(--panel2) 100%)}
-.champion{margin-top:calc(12px * var(--lb-scale));padding:calc(14px * var(--lb-scale));border:1px dashed var(--border);border-radius:6px;background:rgba(240,165,0,0.06);display:flex;align-items:center;justify-content:space-between}
-.champ-left{display:flex;align-items:center;gap:calc(12px * var(--lb-scale))}
-.big-crown{font-size:calc(34px * var(--lb-scale));filter:drop-shadow(0 2px 6px rgba(240,165,0,.55))}
-.champ-name{font-family:'Bebas Neue',sans-serif;font-size:calc(40px * var(--lb-scale));letter-spacing:.04em;line-height:1}
-.champ-sub{font-size:calc(13px * var(--lb-scale));color:var(--muted2)}
-.champ-toggle{display:flex;gap:calc(8px * var(--lb-scale))}
-.toggle-btn{border:1px solid var(--border);background:var(--panel2);color:var(--muted2);padding:calc(6px * var(--lb-scale)) calc(10px * var(--lb-scale));border-radius:calc(5px * var(--lb-scale));cursor:pointer;font-size:calc(12px * var(--lb-scale))}
+.champion{margin-top:calc(10px * var(--lb-scale));padding:calc(12px * var(--lb-scale));border:1px dashed var(--border);border-radius:6px;background:rgba(240,165,0,0.06);display:flex;align-items:center;justify-content:space-between}
+.champ-left{display:flex;align-items:center;gap:calc(10px * var(--lb-scale))}
+.big-crown{font-size:calc(30px * var(--lb-scale));filter:drop-shadow(0 2px 6px rgba(240,165,0,.55))}
+.champ-name{font-family:'Bebas Neue',sans-serif;font-size:calc(36px * var(--lb-scale));letter-spacing:.04em;line-height:1}
+.champ-sub{font-size:calc(12px * var(--lb-scale));color:var(--muted2)}
+.champ-toggle{display:flex;gap:calc(6px * var(--lb-scale))}
+.toggle-btn{border:1px solid var(--border);background:var(--panel2);color:var(--muted2);padding:calc(5px * var(--lb-scale)) calc(8px * var(--lb-scale));border-radius:calc(5px * var(--lb-scale));cursor:pointer;font-size:calc(11px * var(--lb-scale))}
 .toggle-btn.active{background:var(--accent);color:#0a0c0f;border-color:transparent;font-weight:800}
 
 
 .lb-rank{ text-align:center;color:#8a93a8; font-size:calc(12px * var(--lb-scale)); }
 .lb-main{ display:flex;flex-direction:column;gap:calc(4px * var(--lb-scale)); }
-.lb-name{ font-size:calc(18px * var(--lb-scale)); font-weight:600; }
+.lb-name{ font-size:calc(18px * var(--lb-scale)); font-weight:600; line-height:1.1;}
 .lb-bar{ height:calc(5px * var(--lb-scale)); background:#1e2530; border-radius:calc(3px * var(--lb-scale)); overflow:hidden; }
 .lb-bar-fill{ height:100%; }
 .lb-meta{ font-size:calc(12px * var(--lb-scale)); color:#8a93a8; text-align:right; }
@@ -265,6 +265,7 @@ function setChampionMode(m) {
   document.getElementById('btnByQuotes').classList.toggle('active', m === 'quotes');
   document.getElementById('btnByDollars').classList.toggle('active', m === 'dollars');
   renderChampion();
+  scheduleFitLeaderboard();
   if (CHAMP_TIMER) { clearInterval(CHAMP_TIMER); CHAMP_TIMER = null; }
   if (AWARDS.byQuotes.name && AWARDS.byDollars.name) {
     CHAMP_TIMER = setInterval(() => setChampionMode(MODE === 'quotes' ? 'dollars' : 'quotes'), 5000);
@@ -300,6 +301,25 @@ function renderTicker(techs) {
 }
 
 // ─── Main render ─────────────────────────────────────────────────────────────
+function fitLeaderboard() {
+  const lb = document.getElementById('lb');
+  if (!lb) return;
+  let scale = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--lb-scale')) || 1;
+  const minScale = 0.70, maxScale = 1.05;
+  for (let i = 0; i < 12; i++) {
+    const over = lb.scrollHeight - lb.clientHeight;
+    if (over <= 1) break;
+    const ratio = lb.clientHeight / lb.scrollHeight;
+    scale = Math.max(minScale, Math.min(maxScale, scale * ratio * 0.97));
+    document.documentElement.style.setProperty('--lb-scale', scale.toFixed(3));
+  }
+}
+
+function scheduleFitLeaderboard() {
+  // Two RAFs lets layout settle (fonts, flex sizing, etc.)
+  requestAnimationFrame(() => requestAnimationFrame(fitLeaderboard));
+}
+
 function render(data) {
   // Header
   const teamName = data.teamName || 'Team 2';
@@ -351,11 +371,10 @@ function render(data) {
   const lb = document.getElementById('lb');
   lb.innerHTML = '';
   const sorted = [...techs].sort((a, b) => (b.quotes - a.quotes) || a.name.localeCompare(b.name));
-
-  // Responsive leaderboard scaling: adjust sizing based on tech count
+  // Initial leaderboard scale based on tech count (fine tuned by fitLeaderboard)
   const techCount = sorted.length || 1;
   let lbScale = TARGET_TECHS / techCount;
-  lbScale = Math.max(0.78, Math.min(1.05, lbScale));
+  lbScale = Math.max(0.72, Math.min(1.05, lbScale));
   document.documentElement.style.setProperty('--lb-scale', lbScale.toFixed(3));
 
   const maxQ = Math.max(1, ...(sorted.map(x => Number(x.quotes) || 0))); // avoid divide by zero
@@ -376,7 +395,10 @@ function render(data) {
     lb.appendChild(row);
   });
 
-  // Safety grid
+  
+  scheduleFitLeaderboard();
+
+// Safety grid
   const grid = document.getElementById('sgrid');
   grid.innerHTML = '';
   const C = 2 * Math.PI * (78 / 2 - 6);
