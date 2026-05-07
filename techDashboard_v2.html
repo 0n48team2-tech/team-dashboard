@@ -7,6 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
+  --lb-scale:1; /* responsive scaling for leaderboard + champion */
   --bg:#0a0c0f; --panel:#111418; --panel2:#161b22; --border:#1e2530;
   --accent:#f0a500; --accent2:#00c9a7; --accent3:#e05c5c; --accent4:#5c9be0;
   --text:#e8edf5; --muted:#5a6478; --muted2:#8a93a8;
@@ -32,18 +33,26 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;ove
 
 /* Leaderboard */
 .leaderboard{grid-column:1;grid-row:2/4}
-.lb-list{display:flex;flex-direction:column;gap:8px;flex:1;overflow:hidden}
-.lb-row{display:grid;grid-template-columns:26px 1fr 64px 48px;align-items:center;gap:10px;padding:10px 12px;background:var(--panel2);border-radius:6px;border:1px solid var(--border)}
+.lb-list{display:flex;flex-direction:column;gap:calc(8px * var(--lb-scale));flex:1;overflow:hidden}
+.lb-row{display:grid;grid-template-columns:calc(26px * var(--lb-scale)) 1fr calc(64px * var(--lb-scale)) calc(48px * var(--lb-scale));align-items:center;gap:calc(10px * var(--lb-scale));padding:calc(10px * var(--lb-scale)) calc(12px * var(--lb-scale));background:var(--panel2);border-radius:6px;border:1px solid var(--border)}
 .lb-row.top1{border-color:var(--accent);background:linear-gradient(90deg,rgba(240,165,0,.07) 0%,var(--panel2) 100%)}
-.champion{margin-top:12px;padding:14px;border:1px dashed var(--border);border-radius:6px;background:rgba(240,165,0,0.06);display:flex;align-items:center;justify-content:space-between}
-.champ-left{display:flex;align-items:center;gap:12px}
-.big-crown{font-size:34px;filter:drop-shadow(0 2px 6px rgba(240,165,0,.55))}
-.champ-name{font-family:'Bebas Neue',sans-serif;font-size:40px;letter-spacing:.04em}
-.champ-sub{font-size:13px;color:var(--muted2)}
-.champ-toggle{display:flex;gap:8px}
-.toggle-btn{border:1px solid var(--border);background:var(--panel2);color:var(--muted2);padding:6px 10px;border-radius:5px;cursor:pointer;font-size:12px}
+.champion{margin-top:calc(12px * var(--lb-scale));padding:calc(14px * var(--lb-scale));border:1px dashed var(--border);border-radius:6px;background:rgba(240,165,0,0.06);display:flex;align-items:center;justify-content:space-between}
+.champ-left{display:flex;align-items:center;gap:calc(12px * var(--lb-scale))}
+.big-crown{font-size:calc(34px * var(--lb-scale));filter:drop-shadow(0 2px 6px rgba(240,165,0,.55))}
+.champ-name{font-family:'Bebas Neue',sans-serif;font-size:calc(40px * var(--lb-scale));letter-spacing:.04em;line-height:1}
+.champ-sub{font-size:calc(13px * var(--lb-scale));color:var(--muted2)}
+.champ-toggle{display:flex;gap:calc(8px * var(--lb-scale))}
+.toggle-btn{border:1px solid var(--border);background:var(--panel2);color:var(--muted2);padding:calc(6px * var(--lb-scale)) calc(10px * var(--lb-scale));border-radius:calc(5px * var(--lb-scale));cursor:pointer;font-size:calc(12px * var(--lb-scale))}
 .toggle-btn.active{background:var(--accent);color:#0a0c0f;border-color:transparent;font-weight:800}
 
+
+.lb-rank{ text-align:center;color:#8a93a8; font-size:calc(12px * var(--lb-scale)); }
+.lb-main{ display:flex;flex-direction:column;gap:calc(4px * var(--lb-scale)); }
+.lb-name{ font-size:calc(18px * var(--lb-scale)); font-weight:600; }
+.lb-bar{ height:calc(5px * var(--lb-scale)); background:#1e2530; border-radius:calc(3px * var(--lb-scale)); overflow:hidden; }
+.lb-bar-fill{ height:100%; }
+.lb-meta{ font-size:calc(12px * var(--lb-scale)); color:#8a93a8; text-align:right; }
+.lb-val{ text-align:right; font-family:'DM Mono',monospace; font-size:calc(13px * var(--lb-scale)); }
 /* Participation */
 .participation{grid-column:2;grid-row:2}
 .part-wrap{flex:1;display:flex;align-items:center;justify-content:center}
@@ -223,6 +232,7 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;ove
 // ─── Constants ───────────────────────────────────────────────────────────────
 const AUTO_REFRESH_MS = 5 * 60 * 1000; // re-fetch data.json every 5 minutes
 const BASE_W = 1920, BASE_H = 1032, TICKER_H = 48;
+const TARGET_TECHS = 13; // tech count that fits with scale 1.0
 const moneyFmt = n => '$' + Math.round(Number(n || 0)).toLocaleString();
 
 // ─── Data URL ────────────────────────────────────────────────────────────────
@@ -341,21 +351,28 @@ function render(data) {
   const lb = document.getElementById('lb');
   lb.innerHTML = '';
   const sorted = [...techs].sort((a, b) => (b.quotes - a.quotes) || a.name.localeCompare(b.name));
-  const maxQ = sorted[0]?.quotes || 1;
+
+  // Responsive leaderboard scaling: adjust sizing based on tech count
+  const techCount = sorted.length || 1;
+  let lbScale = TARGET_TECHS / techCount;
+  lbScale = Math.max(0.78, Math.min(1.05, lbScale));
+  document.documentElement.style.setProperty('--lb-scale', lbScale.toFixed(3));
+
+  const maxQ = Math.max(1, ...(sorted.map(x => Number(x.quotes) || 0))); // avoid divide by zero
   sorted.forEach((t, i) => {
     const row = document.createElement('div');
     row.className = 'lb-row' + (i === 0 && t.quotes > 0 ? ' top1' : '');
     const w = (t.quotes / maxQ) * 100;
     row.innerHTML = `
-      <div style="text-align:center;color:#8a93a8">${t.quotes > 0 ? i + 1 : '—'}</div>
-      <div>
-        <div style="font-size:18px;font-weight:600">${t.name}</div>
-        <div style="height:5px;background:#1e2530;border-radius:3px;overflow:hidden">
-          <div style="height:5px;width:${w}%;background:${i === 0 ? 'var(--accent)' : 'var(--accent2)'}"></div>
+      <div class="lb-rank">${t.quotes > 0 ? i + 1 : '—'}</div>
+      <div class="lb-main">
+        <div class="lb-name">${t.name}</div>
+        <div class="lb-bar">
+          <div class="lb-bar-fill" style="width:${w}%;background:${i === 0 ? 'var(--accent)' : 'var(--accent2)'}"></div>
         </div>
       </div>
-      <div style="font-size:12px;color:#8a93a8;text-align:right">${t.quotes > 0 ? t.quotes + ' quotes' : 'none yet'}</div>
-      <div style="text-align:right;font-family:'DM Mono',monospace">${t.quotes > 0 ? t.quotes : '—'}</div>`;
+      <div class="lb-meta">${t.quotes > 0 ? t.quotes + ' quotes' : 'none yet'}</div>
+      <div class="lb-val">${t.quotes > 0 ? t.quotes : '—'}</div>`;
     lb.appendChild(row);
   });
 
